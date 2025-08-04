@@ -5,7 +5,7 @@
   <version>0.0.1-SNAPSHOT</version>
   <properties>
   <sonar.coverage.jacoco.xmlReportPaths>
-    ../app-it/target/site/jacoco-aggregate/jacoco.xml
+    ../java/target/site/jacoco-aggregate/jacoco.xml
   </sonar.coverage.jacoco.xmlReportPaths>
 </properties>
 <profile>
