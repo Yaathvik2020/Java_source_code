@@ -1,0 +1,42 @@
+trigger: none
+pr: none
+
+pool:
+  name: Local
+
+stages:
+  - stage: checkoutcode
+    jobs:
+     - job: 'gitcheckoutcode'
+       steps: 
+        - checkout: self
+  - stage: sonarqubeprepare
+    jobs:
+      - job: 'Sonarqubeanalysis' 
+        steps:
+          - task: SonarQubePrepare@7
+            inputs:
+              SonarQube: 'sonarqubewithazureSCconn'
+              scannerMode: 'other'
+              projectKey: 'TestYAMLSonarQubeKey'
+              projectName: 'TestYAMLSonarQubeName'
+            
+
+  - stage: mavenbuild
+    jobs:
+    - job: 'buildAndScancode' 
+      steps:
+        - task: Maven@4
+          inputs:
+            mavenPomFile: 'pom.xml'  
+            goals: 'clean install sonar:sonar'
+            publishJUnitResults: true
+            javaHomeOption: 'JDKVersion'
+            mavenVersionOption: 'Default'
+            mavenAuthenticateFeed: false
+            effectivePomSkip: false
+            sonarQubeRunAnalysis: true
+            sqMavenPluginVersionChoice: 'pom'
+            codeCoverageToolOption: 'JaCoCo'
+            
+            
